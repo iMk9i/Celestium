@@ -1,0 +1,90 @@
+[gd_resource type="Resource" script_class="UserSettings" format=3 uid="uid://c31ycui56ev60"]
+
+[ext_resource type="Script" uid="uid://dtle165b5i4eu" path="res://scripts/classes/resource/UserSettingsClass.gd" id="1_jqanj"]
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_1wwuu"]
+button_mask = 2
+position = Vector2(555, 24)
+global_position = Vector2(564, 72)
+button_index = 2
+pressed = true
+
+[sub_resource type="InputEventKey" id="InputEventKey_jeqb3"]
+device = -1
+keycode = 83
+unicode = 115
+
+[sub_resource type="InputEventKey" id="InputEventKey_1wwuu"]
+device = -1
+keycode = 87
+unicode = 119
+
+[sub_resource type="InputEventKey" id="InputEventKey_tidhx"]
+device = -1
+keycode = 69
+unicode = 101
+
+[sub_resource type="InputEventKey" id="InputEventKey_jqanj"]
+device = -1
+keycode = 32
+unicode = 32
+
+[sub_resource type="InputEventKey" id="InputEventKey_hq5ka"]
+device = -1
+keycode = 65
+unicode = 97
+
+[sub_resource type="InputEventKey" id="InputEventKey_itc1e"]
+device = -1
+keycode = 70
+unicode = 102
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_hq5ka"]
+button_mask = 128
+position = Vector2(239, 9)
+global_position = Vector2(248, 57)
+button_index = 8
+pressed = true
+
+[sub_resource type="InputEventKey" id="InputEventKey_alavk"]
+device = -1
+keycode = 96
+unicode = 96
+
+[sub_resource type="InputEventKey" id="InputEventKey_sgdxn"]
+device = -1
+keycode = 68
+unicode = 100
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_4i6o0"]
+button_mask = 1
+position = Vector2(305, 18)
+global_position = Vector2(314, 66)
+button_index = 1
+pressed = true
+
+[sub_resource type="InputEventKey" id="InputEventKey_4i6o0"]
+device = -1
+keycode = 4194325
+
+[sub_resource type="InputEventKey" id="InputEventKey_oy0yy"]
+device = -1
+keycode = 4194305
+
+[resource]
+script = ExtResource("1_jqanj")
+sensitivity = Vector2(3, 5)
+forward = SubResource("InputEventKey_1wwuu")
+left = SubResource("InputEventKey_hq5ka")
+right = SubResource("InputEventKey_sgdxn")
+back = SubResource("InputEventKey_jeqb3")
+sprint = SubResource("InputEventKey_4i6o0")
+jump = SubResource("InputEventKey_jqanj")
+shoot = SubResource("InputEventMouseButton_4i6o0")
+aim = SubResource("InputEventMouseButton_1wwuu")
+melee = SubResource("InputEventKey_itc1e")
+interact = SubResource("InputEventKey_tidhx")
+mouse_lock = SubResource("InputEventKey_alavk")
+toggle_menu = SubResource("InputEventKey_oy0yy")
+menu_return = SubResource("InputEventMouseButton_hq5ka")
+metadata/_custom_type_script = "uid://dtle165b5i4eu"
