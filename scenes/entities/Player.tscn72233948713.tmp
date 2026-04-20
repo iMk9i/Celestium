@@ -1,0 +1,108 @@
+[gd_scene format=3 uid="uid://wldyfc4y13bw"]
+
+[ext_resource type="Script" uid="uid://i44t2x4hlisk" path="res://scripts/player/PlayerCore.gd" id="1_fd72t"]
+[ext_resource type="Script" uid="uid://cu70bgp0ajh4b" path="res://scripts/player/systems/SYS-Movement.gd" id="2_o7et6"]
+[ext_resource type="Script" uid="uid://c88o2gdchtjs4" path="res://scripts/player/data/DATA-Velocity.gd" id="2_yjynp"]
+[ext_resource type="Script" uid="uid://bv7kf7afh3ism" path="res://scripts/player/data/DATA-Energy.gd" id="3_j1g85"]
+[ext_resource type="Script" uid="uid://dvd7n20bb8vfx" path="res://scripts/player/systems/SYS-Gravity.gd" id="4_yjynp"]
+[ext_resource type="Script" uid="uid://cvhk1qq6rwpje" path="res://scripts/player/UI/debug/PLR-DebugUI.gd" id="6_7jddb"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p51ah"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_p51ah"]
+
+[node name="Player" type="CharacterBody3D" unique_id=536819620 node_paths=PackedStringArray("veloData")]
+script = ExtResource("1_fd72t")
+veloData = NodePath("Data/Velocity")
+attributes = Dictionary[String, float]({
+"accel": 10.0,
+"energy": 100.0,
+"energy_max": 100.0,
+"energy_regen": 25.0,
+"jump_str": 40.0,
+"lift_str": 4.5,
+"mass": 5.0,
+"speed": 100.0
+})
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1020049224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_p51ah")
+
+[node name="Data" type="Node" parent="." unique_id=826912671]
+
+[node name="Velocity" type="Node" parent="Data" unique_id=557904000]
+script = ExtResource("2_yjynp")
+
+[node name="Energy" type="Node" parent="Data" unique_id=2122072444]
+script = ExtResource("3_j1g85")
+
+[node name="Systems" type="Node" parent="." unique_id=348080794]
+
+[node name="MovementSystem" type="Node" parent="Systems" unique_id=756689521 node_paths=PackedStringArray("velocity", "gravity", "energy")]
+script = ExtResource("2_o7et6")
+velocity = NodePath("../../Data/Velocity")
+gravity = NodePath("../GravitySystem")
+energy = NodePath("../../Data/Energy")
+
+[node name="GravitySystem" type="Node" parent="Systems" unique_id=281623104 node_paths=PackedStringArray("velocity")]
+script = ExtResource("4_yjynp")
+velocity = NodePath("../../Data/Velocity")
+metadata/_custom_type_script = "uid://dvd7n20bb8vfx"
+
+[node name="Camera" type="Node3D" parent="." unique_id=1666984126]
+
+[node name="Camera3D" type="Camera3D" parent="Camera" unique_id=824334766]
+transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 3, 4)
+
+[node name="Visuals" type="Node3D" parent="." unique_id=567446552]
+
+[node name="Mesh" type="MeshInstance3D" parent="Visuals" unique_id=1508886855]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visibility_range_begin = 1.0
+mesh = SubResource("CapsuleMesh_p51ah")
+
+[node name="UI" type="Node" parent="." unique_id=1808540353]
+
+[node name="Debug" type="Node" parent="UI" unique_id=1570402015 node_paths=PackedStringArray("energybar", "healthbar")]
+script = ExtResource("6_7jddb")
+energybar = NodePath("DebugOutline/EnergyBar")
+healthbar = NodePath("DebugOutline/HealthBar")
+
+[node name="DebugOutline" type="ReferenceRect" parent="UI/Debug" unique_id=1251988487]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EnergyBar" type="ProgressBar" parent="UI/Debug/DebugOutline" unique_id=497271744]
+custom_minimum_size = Vector2(500, 40)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.9480001
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 710.0
+offset_top = 0.15991211
+offset_right = -710.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+show_percentage = false
+metadata/_edit_use_anchors_ = true
+
+[node name="HealthBar" type="ProgressBar" parent="UI/Debug/DebugOutline" unique_id=588495479]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.896
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 760.0
+offset_top = 0.3199463
+offset_right = -760.0
+offset_bottom = -72.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_use_anchors_ = true

@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bk4fhyqgd4ivk"]
+
+[ext_resource type="PackedScene" uid="uid://wldyfc4y13bw" path="res://scenes/entities/Player.tscn" id="1_hddm4"]
+[ext_resource type="Texture2D" uid="uid://c3bpgeydbcc80" path="res://resources/textures/kenney_prototype_textures/texture_11.png" id="1_mm0a5"]
+[ext_resource type="Texture2D" uid="uid://brwbgx7b16syx" path="res://AmbientCG/Downloads/Marble0122K-JPG/Marble012_2K-JPG_Displacement.jpg" id="2_o6wi6"]
+[ext_resource type="Texture2D" uid="uid://ccfr5e4dmgeb6" path="res://AmbientCG/Downloads/Marble0122K-JPG/Marble012_2K-JPG_NormalGL.jpg" id="3_emj6c"]
+[ext_resource type="Texture2D" uid="uid://drhcbh1njtm1n" path="res://AmbientCG/Downloads/Marble0122K-JPG/Marble012_2K-JPG_Roughness.jpg" id="4_mrac1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kddj0"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_q8s1k"]
+sky_material = SubResource("ProceduralSkyMaterial_kddj0")
+
+[sub_resource type="Environment" id="Environment_mm0a5"]
+background_mode = 2
+sky = SubResource("Sky_q8s1k")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2q4k0"]
+albedo_texture = ExtResource("1_mm0a5")
+albedo_texture_msdf = true
+roughness_texture = ExtResource("4_mrac1")
+normal_enabled = true
+normal_texture = ExtResource("3_emj6c")
+heightmap_texture = ExtResource("2_o6wi6")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
+uv1_triplanar = true
+
+[node name="Playground" type="Node3D" unique_id=726839086]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1962121051]
+environment = SubResource("Environment_mm0a5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=1836579221]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ground" type="CSGBox3D" parent="WorldEnvironment" unique_id=188562036]
+use_collision = true
+size = Vector3(50, 1, 50)
+material = SubResource("StandardMaterial3D_2q4k0")
+
+[node name="Player" parent="." unique_id=536819620 instance=ExtResource("1_hddm4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.3563175, 0.4999981, 4.7227306)

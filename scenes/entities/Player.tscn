@@ -1,0 +1,181 @@
+[gd_scene format=3 uid="uid://wldyfc4y13bw"]
+
+[ext_resource type="Script" uid="uid://i44t2x4hlisk" path="res://scripts/player/PlayerCore.gd" id="1_fd72t"]
+[ext_resource type="Script" uid="uid://cu70bgp0ajh4b" path="res://scripts/player/systems/SYS-Movement.gd" id="2_o7et6"]
+[ext_resource type="Script" uid="uid://c88o2gdchtjs4" path="res://scripts/player/data/DATA-Velocity.gd" id="2_yjynp"]
+[ext_resource type="Script" uid="uid://dvd7n20bb8vfx" path="res://scripts/player/systems/SYS-Gravity.gd" id="4_yjynp"]
+[ext_resource type="Script" uid="uid://cvhk1qq6rwpje" path="res://scripts/player/UI/debug/PLR-DebugUI.gd" id="6_7jddb"]
+[ext_resource type="Texture2D" uid="uid://2omf55bpneol" path="res://resources/sprites/addons/kenney_particle_pack/star_09.png" id="7_h683u"]
+[ext_resource type="Texture2D" uid="uid://d3vvxs33v4fwr" path="res://resources/sprites/addons/kenney_particle_pack/star_06.png" id="8_h683u"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p51ah"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_p51ah"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_h683u"]
+
+[node name="Player" type="CharacterBody3D" unique_id=536819620 node_paths=PackedStringArray("ground_ray", "veloData")]
+floor_snap_length = 0.25
+safe_margin = 0.003
+script = ExtResource("1_fd72t")
+ground_ray = NodePath("GroundRay")
+veloData = NodePath("Data/Velocity")
+attributes = Dictionary[String, float]({
+"accel": 10.0,
+"boost_str": 450.0,
+"jump_str": 35.0,
+"lift_str": 4.5,
+"mass": 5.0,
+"speed": 80.0
+})
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1020049224]
+shape = SubResource("CapsuleShape3D_p51ah")
+
+[node name="GroundRay" type="RayCast3D" parent="." unique_id=1092556638]
+target_position = Vector3(0, -1.2, 0)
+collision_mask = 15
+
+[node name="Data" type="Node" parent="." unique_id=826912671]
+
+[node name="Velocity" type="Node" parent="Data" unique_id=557904000]
+script = ExtResource("2_yjynp")
+
+[node name="Systems" type="Node" parent="." unique_id=348080794]
+
+[node name="MovementSystem" type="Node" parent="Systems" unique_id=756689521 node_paths=PackedStringArray("velocity", "gravity")]
+script = ExtResource("2_o7et6")
+velocity = NodePath("../../Data/Velocity")
+gravity = NodePath("../GravitySystem")
+
+[node name="GravitySystem" type="Node" parent="Systems" unique_id=281623104 node_paths=PackedStringArray("velocity")]
+script = ExtResource("4_yjynp")
+velocity = NodePath("../../Data/Velocity")
+metadata/_custom_type_script = "uid://dvd7n20bb8vfx"
+
+[node name="Camera" type="Node3D" parent="." unique_id=1666984126]
+
+[node name="Camera3D" type="Camera3D" parent="Camera" unique_id=824334766]
+transform = Transform3D(1, 0, 0, 0, 0.9659259, 0.25881907, 0, -0.25881907, 0.9659258, 0, 3, 4)
+
+[node name="Visuals" type="Node3D" parent="." unique_id=567446552]
+
+[node name="Mesh" type="MeshInstance3D" parent="Visuals" unique_id=1508886855]
+visibility_range_begin = 1.0
+mesh = SubResource("CapsuleMesh_p51ah")
+
+[node name="UI" type="Node" parent="." unique_id=1808540353]
+
+[node name="Debug" type="Node" parent="UI" unique_id=1570402015 node_paths=PackedStringArray("energybar", "healthbar", "datinfo", "veda", "sysinfo", "mvsi", "grsi")]
+script = ExtResource("6_7jddb")
+energybar = NodePath("DebugOutline/EnergyBar")
+healthbar = NodePath("DebugOutline/HealthBar")
+datinfo = NodePath("DebugOutline/DatInfo/Label")
+veda = NodePath("../../Data/Velocity")
+sysinfo = NodePath("DebugOutline/SysInfo/Label")
+mvsi = NodePath("../../Systems/MovementSystem")
+grsi = NodePath("../../Systems/GravitySystem")
+
+[node name="DebugOutline" type="ReferenceRect" parent="UI/Debug" unique_id=1251988487]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EnergyBar" type="TextureProgressBar" parent="UI/Debug/DebugOutline" unique_id=1309434311]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -46.0
+offset_top = -92.0
+offset_right = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 4.0
+value = 3.0
+fill_mode = 5
+nine_patch_stretch = true
+texture_under = ExtResource("7_h683u")
+texture_progress = ExtResource("7_h683u")
+tint_under = Color(0, 0.16470589, 0.16470589, 1)
+tint_progress = Color(0, 0.37254903, 1, 1)
+
+[node name="HealthBar" type="TextureProgressBar" parent="UI/Debug/DebugOutline" unique_id=617408027]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -46.0
+offset_top = -92.0
+offset_right = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 10.0
+value = 5.0
+fill_mode = 5
+nine_patch_stretch = true
+texture_under = ExtResource("8_h683u")
+texture_progress = ExtResource("8_h683u")
+tint_under = Color(0, 0.34269235, 0.005319555, 1)
+tint_progress = Color(0, 1, 0, 1)
+
+[node name="SysInfo" type="Panel" parent="UI/Debug/DebugOutline" unique_id=1342617682]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 182.0
+offset_right = 200.0
+offset_bottom = -551.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Debug/DebugOutline/SysInfo" unique_id=348646061]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Velocity : {vl}
+-|Input : {in}
+-|Force : {fr}
+-|Impact : {im}
+
+Energy : {en}
+"
+label_settings = SubResource("LabelSettings_h683u")
+autowrap_mode = 3
+
+[node name="DatInfo" type="Panel" parent="UI/Debug/DebugOutline" unique_id=1407807873]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 540.0
+offset_right = 200.0
+offset_bottom = -196.0
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/Debug/DebugOutline/DatInfo" unique_id=2132704397]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "MOVEMENT:
+-|DIRECTION : {mvdr}
+-|STATE : {mvst}
+-|HOVERING : {mvhv}
+
+GRAVITY : 
+-|VALUE : {grva}
+-|DELTA : {grdt}"
+label_settings = SubResource("LabelSettings_h683u")
+autowrap_mode = 3

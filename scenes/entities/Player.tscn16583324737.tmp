@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://wldyfc4y13bw"]
+
+[ext_resource type="Script" uid="uid://i44t2x4hlisk" path="res://scripts/player/PLR-BaseScript.gd" id="1_fd72t"]
+[ext_resource type="Script" uid="uid://4jwd1u0fka0t" path="res://scripts/components/player/MovementPCOMP.gd" id="2_o7et6"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p51ah"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_p51ah"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g13of"]
+radius = 1.0
+
+[sub_resource type="GDScript" id="GDScript_24gqh"]
+resource_name = "PLR-CameraControl"
+script/source = "extends SpringArm3D; class_name PLR_Cam
+
+
+var player :Player
+var rest_pos := Vector3(0,1.5,0)
+
+var inner_dist
+
+
+func _ready() -> void:
+	player = get_parent()
+	add_excluded_object(player.get_rid())
+
+
+func _input(event: InputEvent) -> void:
+	if (Input.is_action_just_pressed(\"mouse_lock\")):
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED if \\
+			Input.mouse_mode != Input.MOUSE_MODE_CAPTURED else Input.MOUSE_MODE_VISIBLE
+	
+	if (Input.mouse_mode == Input.MOUSE_MODE_CAPTURED):
+		if event is InputEventMouseMotion:
+			var sens = -event.relative*PlayerSettings.uSettings.sensitivity
+			player.rot = deg_to_rad(sens.x)
+			player.basis = player.basis.rotated(player.up_direction, player.rot)
+			rotation_degrees.x += sens.y
+			rotation_degrees.x = clamp(rotation_degrees.x, -85, 85)
+
+
+func _physics_process(delta: float) -> void:
+	return
+	var input = player.player_inputs[\"input\"]
+	var tpos = Vector3(input.x, 0, input.y*.25).normalized()*delta
+	position += tpos*5
+	position = position.limit_length(1)
+"
+
+[node name="Player" type="CharacterBody3D" unique_id=536819620]
+process_thread_group = 1
+process_thread_group_order = 0
+process_thread_messages = 0
+script = ExtResource("1_fd72t")
+g_lock = false
+
+[node name="Collision" type="CollisionShape3D" parent="." unique_id=1020049224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_p51ah")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1508886855]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visibility_range_begin = 1.0
+mesh = SubResource("CapsuleMesh_p51ah")
+
+[node name="CamPiv" type="SpringArm3D" parent="." unique_id=873490762]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 1.5, 0)
+shape = SubResource("SphereShape3D_g13of")
+spring_length = 8.0
+script = SubResource("GDScript_24gqh")
+
+[node name="Cam" type="Camera3D" parent="CamPiv" unique_id=493344298]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.9659257, -0.25881898, 0, 0.25881898, 0.9659257, 0, 0, 0)
+
+[node name="MovementPCOMP" type="Node" parent="." unique_id=1800277327]
+script = ExtResource("2_o7et6")
+enabled = true
+metadata/_custom_type_script = "uid://4jwd1u0fka0t"
